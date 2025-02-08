@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falcon Dashboard Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .dark .gradient-text {
+            background: linear-gradient(45deg, #4299e1, #38b2ac);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm z-50 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 gradient-text ">Ajay's</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="relative group">
+                        <input type="search" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-xl bg-gray-100/50 dark:bg-gray-700/50 border-0 focus:ring-2 focus:ring-blue-500 w-64 transition-all duration-200 group-hover:w-72">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-bell text-lg"></i>
+                </button>
+                <div class="relative group">
+                    <button class="flex items-center space-x-2 group">
+                        <div class="relative">
+                            <img src="./img/avtar.png" alt="Profile" class="h-9 w-9 rounded-full ring-2 ring-blue-500 p-0.5">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
+                        </div>
+                        <span class="text-gray-700 dark:text-white font-medium">Ajay's</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                        <div class="p-2 space-y-1">
+                            <a href="#" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-user mr-3 text-sm"></i>
+                                Profile
+                            </a>
+                            <a href="#" class="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-cog mr-3 text-sm"></i>
+                                Settings
+                            </a>
+                            <div class="border-t border-gray-100 dark:border-gray-700"></div>
+                            <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg">
+                                <i class="fas fa-sign-out-alt mr-3 text-sm"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-moon text-lg"></i>
+                </button>
+            </div>
+            <!-- Hamburger Menu -->
+            <button id="hamburger" class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="flex pt-16">
+        <aside id="sidebar" class="fixed left-0 w-64 h-full bg-white dark:bg-gray-800 shadow-xl transform -translate-x-full md:translate-x-0 transition-transform duration-300 border-r border-gray-100 dark:border-gray-700">
+            <div class="p-4">
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl group transition-colors">
+                        <i class="fas fa-chart-pie mr-3 text-lg text-blue-500 group-hover:text-blue-600"></i>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl group transition-colors">
+                        <i class="fas fa-shopping-cart mr-3 text-lg text-purple-500 group-hover:text-purple-600"></i>
+                        <span class="font-medium">Orders</span>
+                        <span class="ml-auto px-2 py-1 text-xs font-medium bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-300 rounded-full">15+</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl group transition-colors">
+                        <i class="fas fa-users mr-3 text-lg text-green-500 group-hover:text-green-600"></i>
+                        <span class="font-medium">Users</span>
+                    </a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl group transition-colors">
+                        <i class="fas fa-cog mr-3 text-lg text-yellow-500 group-hover:text-yellow-600"></i>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                </nav>
+
+                <div class="mt-8 px-3">
+                    <div class="bg-blue-50/50 dark:bg-blue-500/10 p-4 rounded-xl border border-blue-100 dark:border-blue-500/20">
+                        <h4 class="text-sm font-semibold text-blue-800 dark:text-blue-200">Storage Status</h4>
+                        <div class="mt-2 relative pt-1">
+                            <div class="flex mb-2 items-center justify-between">
+                                <span class="text-xs font-semibold inline-block text-blue-600 dark:text-blue-300">65%</span>
+                            </div>
+                            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100 dark:bg-blue-500/20">
+                                <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 w-2/3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 md:ml-64 p-8">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 animate-slide-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
+                            <p class="text-2xl font-bold mt-2 dark:text-white">$45,231</p>
+                        </div>
+                        <div class="p-3 bg-green-100 dark:bg-green-500/20 rounded-xl">
+                            <i class="fas fa-dollar-sign text-green-600 dark:text-green-400 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-green-500 mr-1"><i class="fas fa-arrow-up"></i> 12%</span>
+                        <span class="text-gray-500 dark:text-gray-400">vs last month</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 animate-slide-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 ">Total Orders</p>
+                            <p class="text-2xl font-bold mt-2 dark:text-white">1,234</p>
+                        </div>
+                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 rounded-xl">
+                            <i class="fas fa-shopping-cart text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-red-500 mr-1"><i class="fas fa-arrow-down"></i> 5%</span>
+                        <span class="text-gray-500 dark:text-gray-400">vs last month</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 animate-slide-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">New Users</p>
+                            <p class="text-2xl font-bold mt-2 dark:text-white">300</p>
+                        </div>
+                        <div class="p-3 bg-yellow-100 dark:bg-yellow-500/20 rounded-xl">
+                            <i class="fas fa-users text-yellow-600 dark:text-yellow-400 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-green-500 mr-1"><i class="fas fa-arrow-up"></i> 20%</span>
+                        <span class="text-gray-500 dark:text-gray-400">vs last month</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 animate-slide-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Pending Orders</p>
+                            <p class="text-2xl font-bold mt-2 dark:text-white">45</p>
+                        </div>
+                        <div class="p-3 bg-red-100 dark:bg-red-500/20 rounded-xl">
+                            <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span class="text-red-500 mr-1"><i class="fas fa-arrow-down"></i> 10%</span>
+                        <span class="text-gray-500 dark:text-gray-400">vs last month</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="relative overflow-hidden">
+                        <img src="./img/image.png" alt="Wireless Headphones" class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <button class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-sm hover:bg-white transition-colors like-button" data-liked="false">
+                            <i class="far fa-heart text-red-500"></i>
+                        </button>
+                        <span class="like-count text-sm text-gray-500 dark:text-gray-400">0 Likes</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Electronics</span>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span class="text-sm font-medium">4.8</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-2 dark:text-white">Wireless Headphones</h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-blue-600 dark:text-blue-400 font-bold text-xl">$299</span>
+                            <button class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="relative overflow-hidden">
+                        <img src="./img/image1.png" alt="Smart Vacuum Cleaner" class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <button class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-sm hover:bg-white transition-colors like-button" data-liked="false">
+                            <i class="far fa-heart text-red-500"></i>
+                        </button>
+                        <span class="like-count text-sm text-gray-500 dark:text-gray-400">0 Likes</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Home Appliances</span>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span class="text-sm font-medium">4.5</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-2 dark:text-white">Smart Vacuum Cleaner</h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-blue-600 dark:text-blue-400 font-bold text-xl">$199</span>
+                            <button class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="relative overflow-hidden">
+                        <img src="./img/image2.png" alt="Smartphone" class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <button class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-sm hover:bg-white transition-colors like-button" data-liked="false">
+                            <i class="far fa-heart text-red-500"></i>
+                        </button>
+                        <span class="like-count text-sm text-gray-500 dark:text-gray-400">0 Likes</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Electronics</span>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span class="text-sm font-medium">4.7</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-2 dark:text-white">Smartphone</h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-blue-600 dark:text-blue-400 font-bold text-xl">$799</span>
+                            <button class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="relative overflow-hidden">
+                        <img src="./img/image4.png" alt="Laptop" class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        <button class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-sm hover:bg-white transition-colors like-button" data-liked="false">
+                            <i class="far fa-heart text-red-500"></i>
+                        </button>
+                        <span class="like-count text-sm text-gray-500 dark:text-gray-400">0 Likes</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Computers</span>
+                            <div class="flex items-center space-x-1 text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <span class="text-sm font-medium">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold mt-2 dark:text-white">Laptop</h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-blue-600 dark:text-blue-400 font-bold text-xl">$1,199</span>
+                            <button class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden border border-gray-100 dark:border-gray-700 mb-8">
+                <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold dark:text-white">Recent Transactions</h3>
+                    <button class="flex items-center space-x-2 text-blue-500 hover:text-blue-600">
+                        <i class="fas fa-download"></i>
+                        <span>Export</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="./img/photo.png" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium dark:text-white">John Doe</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">#TXN-1234</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-07-15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-white">$2,500</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300">Completed</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="./img/photo.png" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium dark:text-white">Jane Smith</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">#TXN-1235</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-07-16</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-white">$1,200</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-300">Pending</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="./img/photo.png" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium dark:text-white">Michael Brown</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">#TXN-1236</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-07-17</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-white">$3,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300">Failed</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4 dark:text-white">Revenue Overview</h3>
+                <canvas id="revenueChart" class="w-full h-96"></canvas>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold dark:text-white">User  Activity</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  1 logged in</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">10 mins ago</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  2 made a purchase</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">20 mins ago</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  3 updated their profile</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">30 mins ago</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  4 logged out</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">1 hour ago</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold dark:text-white">Recent Notifications</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">New order received</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">5 mins ago</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  5 commented on your post</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">15 mins ago</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">User  6 liked your product</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">25 mins ago</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold mb-4 dark:text-white">Sales Overview (Bar Chart)</h3>
+                    <canvas id="barChart" class="w-full h-64"></canvas>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold mb-4 dark:text-white">Revenue Trend (Line Chart)</h3>
+                    <canvas id="lineChart" class="w-full h-64"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./img/script.js"></script>
+    <script>
+        // JavaScript for toggling the sidebar
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+    </script>
+</body>
+
+</html>
